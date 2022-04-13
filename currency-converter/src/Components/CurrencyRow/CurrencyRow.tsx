@@ -1,22 +1,23 @@
-import { Box, MenuItem, Select, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import React, { FC } from 'react';
 
 interface CurrencyRowProps {
   currencies: any[];
+  selectedCurrency: any;
 }
 
-export const CurrencyRow: FC<CurrencyRowProps> = ({ currencies }) => {
+export const CurrencyRow: FC<CurrencyRowProps> = ({ currencies, selectedCurrency }) => {
 
   return (
     <Box sx={{ display: 'flex', margin: '10px' }}>
       <TextField fullWidth variant='outlined' sx={{ marginRight: '10px' }} />
-      <Select>
+      <select value={selectedCurrency}>
         {currencies &&
-          currencies.map<any>(currency => {
-            return currency && <MenuItem value={currency} key={currency}>{currency}</MenuItem>
+          currencies.map(currency => {
+            return currency && <option value={currency} key={currency}>{currency}</option>
           })
         }
-      </Select>
+      </select>
     </Box>
   )
 } 
