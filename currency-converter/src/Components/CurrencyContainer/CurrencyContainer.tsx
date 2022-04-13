@@ -1,8 +1,12 @@
 import { Box, Typography } from '@mui/material';
-import React from 'react';
+import React, { FC } from 'react';
 import { CurrencyRow } from '../CurrencyRow/CurrencyRow';
 
-export const CurrencyContainer = () => {
+interface CurrencyContainerProps {
+  currencies: any
+}
+
+export const CurrencyContainer: FC<CurrencyContainerProps> = ({ currencies }) => {
 
   return (
     <Box sx={{ width: { sm: 'min(80%, 700px)', xs: '100%' }, border: { sm: '1px solid gray', xs: 'none' }, margin: 'auto', padding: '0 20px 20px' }}>
@@ -12,8 +16,8 @@ export const CurrencyContainer = () => {
         </Typography>
       </Box>
       <Box>
-        <CurrencyRow />
-        <CurrencyRow />
+        <CurrencyRow currencies={currencies} />
+        <CurrencyRow currencies={currencies} />
       </Box>
     </Box>
 
