@@ -3,8 +3,6 @@ import React, { FC, useState, useEffect } from 'react';
 import { CurrencyRow } from '../CurrencyRow/CurrencyRow';
 import axios from 'axios';
 
-const CURRENCY_URL = 'https://v6.exchangerate-api.com/v6/f0e875cd1f978365b0ce36b2';
-
 export const CurrencyContainer = () => {
   const [currencies, setCurrencies] = useState<any>([])
   const [fromCurrency, setFromCurrency] = useState<any>()
@@ -25,9 +23,8 @@ export const CurrencyContainer = () => {
 
   useEffect(() => {
     axios
-      .get(`${CURRENCY_URL}latest/UAH`)
+      .get(`${process.env.REACT_APP_CURRENCY_URL}/latest/UAH`)
       .then(respone => {
-        console.log([...Object.keys(respone.data.conversion_rates)][0])
         setCurrencies([...Object.keys(respone.data.conversion_rates)]);
         setFromCurrency([...Object.keys(respone.data.conversion_rates)][0]);
         setToCurrency([...Object.keys(respone.data.conversion_rates)][5]);
@@ -39,10 +36,11 @@ export const CurrencyContainer = () => {
 
   useEffect(() => {
     if (fromCurrency != null && toCurrency != null) {
-      axios(`${CURRENCY_URL}/pair/${fromCurrency}/${toCurrency}`)
-        .then(response => {
-          setExchangeRate(response.data.conversion_rate);
-        })
+      axios
+      .get(`${process.env.REACT_APP_CURRENCY_URL}/pair/${fromCurrency}/${toCurrency}`)
+      .then(response => {
+        setExchangeRate(response.data.conversion_rate);
+      });
     }
   }, [fromCurrency, toCurrency])
 
