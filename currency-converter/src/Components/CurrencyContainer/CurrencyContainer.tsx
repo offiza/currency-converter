@@ -1,48 +1,27 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import React, { FC, useState, useEffect } from 'react';
 import { CurrencyRow } from '../CurrencyRow/CurrencyRow';
 import axios from 'axios';
+import { useCurrensy } from '../../hooks/useCurrensy';
+import { useGetCurrencyBetweenTwo } from '../../hooks/useGetCurrencyBetweenTwo';
 
 export const CurrencyContainer = () => {
-  const [currencies, setCurrencies] = useState<any>([])
-  const [fromCurrency, setFromCurrency] = useState<any>()
-  const [toCurrency, setToCurrency] = useState<any>()
-  const [exchangeRate, setExchangeRate] = useState(1)
+  const { currencies, error } = useCurrensy();
+  const [fromCurrency, setFromCurrency] = useState<any>('UAH');
+  const [toCurrency, setToCurrency] = useState<any>('USD');
+  const { currency, isLoading } = useGetCurrencyBetweenTwo(fromCurrency, toCurrency);
+
   const [amount, setAmount] = useState(1)
   const [amountInFromCurrency, setAmountInFromCurrency] = useState(true)
-  const [error, setError] = useState('');
 
   let toAmount, fromAmount;
   if (amountInFromCurrency) {
     fromAmount = amount
-    toAmount = amount * exchangeRate
+    toAmount = amount * currency
   } else {
     toAmount = amount
-    fromAmount = amount / exchangeRate
+    fromAmount = amount / currency
   }
-
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_CURRENCY_URL}/latest/UAH`)
-      .then(respone => {
-        setCurrencies([...Object.keys(respone.data.conversion_rates)]);
-        setFromCurrency([...Object.keys(respone.data.conversion_rates)][0]);
-        setToCurrency([...Object.keys(respone.data.conversion_rates)][5]);
-      })
-      .catch((error) => {
-        setError(error.message);
-      })
-  }, []);
-
-  useEffect(() => {
-    if (fromCurrency != null && toCurrency != null) {
-      axios
-      .get(`${process.env.REACT_APP_CURRENCY_URL}/pair/${fromCurrency}/${toCurrency}`)
-      .then(response => {
-        setExchangeRate(response.data.conversion_rate);
-      });
-    }
-  }, [fromCurrency, toCurrency])
 
   function handleFromAmountChange(e: any) {
     if (parseInt(e.target.value) >= 0)
@@ -56,10 +35,23 @@ export const CurrencyContainer = () => {
     setAmountInFromCurrency(false)
   }
 
+  if (isLoading) {
+    return (
+      <Skeleton variant='rectangular' height={270} sx={{ width: { sm: 'min(80%, 500px)', xs: '100%' }, margin: 'auto' }} />
+    )
+  }
+
   return (
-    <Box sx={{ width: { sm: 'min(80%, 700px)', xs: '100%' }, border: { sm: '1px solid gray', xs: 'none' }, margin: 'auto' }}>
-      <Box sx={{ padding: '10px', textAlign: 'center' }}>
-        <Typography sx={{ fontSize: '24px', fontWeight: '600' }}>
+    <Box
+      sx={{
+        width: { sm: 'min(80%, 500px)', xs: '100%' },
+        border: { sm: '1px solid gray', xs: 'none' },
+        margin: 'auto', paddingBottom: '10px',
+        borderRadius: '10px',
+        backgroundColor: '#bbb'
+      }}>
+      <Box sx={{ padding: '25px', textAlign: 'center' }}>
+        <Typography sx={{ fontSize: '24px', fontWeight: '600' }} color='primary'>
           Currency Converter
         </Typography>
       </Box>

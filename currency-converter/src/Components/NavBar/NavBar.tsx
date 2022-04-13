@@ -7,19 +7,19 @@ export const NavBar = () => {
   const currencyUSD = useGetCurrencyBetweenTwo('UAH', 'USD');
 
   return (
-    <AppBar position="static" sx={{ padding: '10px' }}>
+    <AppBar position="static" color='secondary' sx={{ padding: '20px'}} >
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
-        <Typography variant="h6" color="inherit" >
+        <Typography variant="h6" color='primary' sx={{ fontWeight: '600' }}>
           Currency Converter
         </Typography>
         <Box sx={{ display: 'flex' }}>
           {!currencyEUR.isLoading ?
-            < Typography sx={{ mr: '10px' }}>EUR: {(1 / currencyEUR.currency).toFixed(2)}</Typography>
+            < Typography color='primary' sx={{ mr: '10px'}}>EUR: {(1 / currencyEUR.currency).toFixed(2)}</Typography>
             :
             <Skeleton variant="text" width={80} height={40} sx={{ mr: '10px' }} />
           }
           {!currencyEUR.isLoading ?
-            <Typography>USD: {(1 / currencyUSD.currency).toFixed(2)}</Typography>
+            <Typography color='primary'>USD: {(1 / currencyUSD.currency).toFixed(2)}</Typography>
             :
             <Skeleton variant="text" width={80} height={40} />
           }
