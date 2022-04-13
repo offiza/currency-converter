@@ -1,7 +1,6 @@
 import { Box, Skeleton, Typography } from '@mui/material';
-import React, { FC, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CurrencyRow } from '../CurrencyRow/CurrencyRow';
-import axios from 'axios';
 import { useCurrensy } from '../../hooks/useCurrensy';
 import { useGetCurrencyBetweenTwo } from '../../hooks/useGetCurrencyBetweenTwo';
 

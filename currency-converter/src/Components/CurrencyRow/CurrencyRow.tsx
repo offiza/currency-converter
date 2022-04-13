@@ -1,4 +1,4 @@
-import { Box, TextField, Select } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import React, { FC } from 'react';
 
 interface CurrencyRowProps {
@@ -10,7 +10,6 @@ interface CurrencyRowProps {
 }
 
 export const CurrencyRow: FC<CurrencyRowProps> = ({ currencies, selectedCurrency, handleChange, amount, handleAmount }) => {
-
   return (
     <Box sx={{ display: 'flex', margin: '20px' }}>
       <TextField
@@ -21,13 +20,14 @@ export const CurrencyRow: FC<CurrencyRowProps> = ({ currencies, selectedCurrency
         sx={{ marginRight: '10px' }}
         value={amount.toFixed(1)}
         onChange={(e) => handleAmount(e)} />
-      <select value={selectedCurrency} onChange={handleChange} style={{backgroundColor: '#bbb'}}>
+      <select value={selectedCurrency} onChange={handleChange} style={{ backgroundColor: '#bbb' }}>
         {currencies &&
           currencies.map(currency => {
             return currency && <option value={currency} key={currency}>{currency}</option>
           })
         }
       </select>
+
     </Box>
   )
 } 
